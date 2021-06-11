@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {Inject, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SMS } from './sms.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,9 @@ import { SNSClientFactoryReturnType, SNS_CLIENT } from './sns.factory';
 
 @Injectable()
 export class SmsService {
+
+  private readonly logger = new Logger(SmsService.name);
+
   constructor(
     @InjectRepository(SMS)
     private readonly smsRepository: Repository<SMS>,
@@ -21,6 +24,7 @@ export class SmsService {
     const messageResponse = await this.snsClient.SNSClient.publish(
       params,
     ).promise();
+    this.logger.debug(`the sns response: ${JSON.stringify(messageResponse)}`);
     sms.externalMessageId = messageResponse.MessageId;
     return await this.smsRepository.save(sms);
   }

@@ -3,8 +3,8 @@
   "host": "localhost",
   "port": 5432,
   "username": "root",
-  "password": "root",
-  "database": "sms-sender",
+  "password": "198920",
+  "database": "sms",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true
 }

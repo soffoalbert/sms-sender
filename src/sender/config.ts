@@ -27,7 +27,6 @@ export class GlobalConfig {
     AWS_REGION: Joi.string().required(),
     AWS_ACCESS_KEY_ID: Joi.string().required(),
     AWS_SECRET_ACCESS_KEY: Joi.string().required(),
-    APP_PORT: Joi.string().default('8000'),
   });
 
   static factory: ConfigFactory = createConfigFactory(
@@ -52,9 +51,5 @@ export class GlobalConfig {
     return this.configService.get<string>(
       'global.AWS_SECRET_ACCESS_KEY',
     ) as string;
-  }
-
-  get port(): string {
-    return this.configService.get<string>('global.APP_PORT') as string;
   }
 }
