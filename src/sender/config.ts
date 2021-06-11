@@ -1,4 +1,5 @@
-import Joi, { Schema } from '@hapi/joi';
+import { Schema } from '@hapi/joi';
+import * as Joi from '@hapi/joi';
 import { Injectable } from '@nestjs/common';
 import { ConfigFactory, ConfigService, registerAs } from '@nestjs/config';
 
