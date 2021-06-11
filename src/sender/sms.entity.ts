@@ -1,16 +1,20 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
 
 @Entity()
 export class SMS {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
+  @IsNotEmpty()
   receiverPhoneNumber: string;
 
   @Column()
+  @IsNotEmpty()
   message: string;
 
   @Column()
-  externalMessageId: string;
+  @IsNotEmpty()
+  externalMessageId?: string;
 }

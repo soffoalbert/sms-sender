@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { SNSClientFactoryReturnType, SNS_CLIENT } from './sns.factory';
 
 @Injectable()
-export class SenderService {
+export class SmsService {
   constructor(
     @InjectRepository(SMS)
     private readonly smsRepository: Repository<SMS>,

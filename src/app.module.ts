@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SenderModule } from './sender/sender.module';
+import { SmsModule } from './sender/sms.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [
-    SenderModule,
+    SmsModule,
     TypeOrmModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
