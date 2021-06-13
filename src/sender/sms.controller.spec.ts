@@ -1,24 +1,12 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {SmsController} from './sms.controller';
 import {SmsService} from "./sms.service";
-import {Repository} from "typeorm";
 import {SMS} from "./sms.entity";
 import {getRepositoryToken} from "@nestjs/typeorm";
-import {SNS} from "aws-sdk";
 import {SNS_CLIENT, SNSClientFactory} from "./sns.factory";
+import {repositoryMockFactory, snsMockFactory} from "./mocks";
 
-export type SMSRepositoryMock<T> = {
-  [P in keyof T]?: jest.Mock<{}>;
-};
 
-export const repositoryMockFactory: () => SMSRepositoryMock<Repository<any>> = jest.fn(() => ({
-  findOne: jest.fn(entity => entity),
-}));
-
-// @ts-ignore
-export const snsMockFactory: () => SMSRepositoryMock<SNS<any>> = jest.fn(() => ({
-  publish: jest.fn(sms => sms),
-}));
 
 describe('SenderController', () => {
   let controller: SmsController;

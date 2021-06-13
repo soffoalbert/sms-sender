@@ -1,6 +1,15 @@
 import {Repository} from "typeorm";
 import {SNS} from "aws-sdk";
 
+export const repositoryMockFactory: () => SMSRepositoryMock<Repository<any>> = jest.fn(() => ({
+  findOne: jest.fn(entity => entity),
+}));
+
+// @ts-ignore
+export const snsMockFactory: () => SMSRepositoryMock<SNS<any>> = jest.fn(() => ({
+  publish: jest.fn(sms => sms),
+}));
+
 export type SMSRepositoryMock<T> = {
   [P in keyof T]?: jest.Mock<{}>;
 };
