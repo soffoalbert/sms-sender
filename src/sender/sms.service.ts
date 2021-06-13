@@ -1,8 +1,8 @@
 import {Inject, Injectable, Logger, NotFoundException} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SMS } from './sms.entity';
-import { Repository } from 'typeorm';
-import { SNSClientFactoryReturnType, SNS_CLIENT } from './sns.factory';
+import {InjectRepository} from '@nestjs/typeorm';
+import {SMS} from './sms.entity';
+import {Repository} from 'typeorm';
+import {SNSClientFactoryReturnType, SNS_CLIENT} from './sns.factory';
 
 @Injectable()
 export class SmsService {
@@ -14,7 +14,8 @@ export class SmsService {
     private readonly smsRepository: Repository<SMS>,
     @Inject(SNS_CLIENT)
     private readonly snsClient: SNSClientFactoryReturnType,
-  ) {}
+  ) {
+  }
 
   async sendSMS(sms: SMS): Promise<SMS> {
     this.logger.log(`sending this sms: ${JSON.stringify(sms)}`);
@@ -31,15 +32,18 @@ export class SmsService {
   }
 
   async findSMSByRecipient(receiverPhoneNumber: string): Promise<SMS> {
-    this.logger.log(`looking up the sms with this id: ${receiverPhoneNumber}`);
-    const smsFound = await this.smsRepository.findOne(receiverPhoneNumber);
+    this.logger.log(`looking up the sms(s) with this phone number: ${receiverPhoneNumber}`);
+    const smsFound = await this.smsRepository.createQueryBuilder("sms")
+      .where("sms.receiverPhoneNumber = :receiverPhoneNumber", {receiverPhoneNumber})
+      .select(["sms.id", "sms.receiverPhoneNumber", "sms.message", "sms.externalMessageId"])
+      .execute();
     if (!smsFound) {
-      this.logger.debug(` could not find the sms with this id: ${receiverPhoneNumber}`);
+      this.logger.debug(` could not find the sms(s) with this phone number: ${receiverPhoneNumber}`);
       throw new NotFoundException(
         `No SMS found for phone number ${receiverPhoneNumber}`,
       );
     }
-    this.logger.log(` found the sms with this id: ${receiverPhoneNumber} - ${smsFound}`);
+    this.logger.log(` found the following sms(s) with this phone number: ${receiverPhoneNumber} - ${JSON.stringify(smsFound)}`);
     return smsFound;
   }
 }

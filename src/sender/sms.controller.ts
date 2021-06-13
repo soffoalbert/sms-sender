@@ -21,8 +21,8 @@ export class SmsController {
     };
   }
 
-  @Get(':id')
-  async findSMSByPhoneNumber(@Param('phoneNumber') phoneNumber: string) {
-    return this.senderService.findSMSByRecipient(phoneNumber);
+  @Get(':phoneNumber')
+  async findSMSByPhoneNumber(@Param('phoneNumber') phoneNumber: string) : Promise<SMS> {
+    return await this.senderService.findSMSByRecipient(phoneNumber);
   }
 }
